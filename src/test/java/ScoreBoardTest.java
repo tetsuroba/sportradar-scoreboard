@@ -18,7 +18,7 @@ public class ScoreBoardTest {
     }
 
     @Test
-    public void newMatchShouldAddMatchToOngoingMatches() {
+    public void newMatchShouldAddMatchToOngoingMatches() throws NoTeamNameGivenException {
         ScoreBoard scoreBoard = new ScoreBoard();
 
         scoreBoard.newMatch("Germany", "Brazil");
@@ -28,7 +28,7 @@ public class ScoreBoardTest {
     }
 
     @Test
-    public void newMatchTeamsShouldMatchGivenTeams() {
+    public void newMatchTeamsShouldMatchGivenTeams() throws NoTeamNameGivenException {
         ScoreBoard scoreBoard = new ScoreBoard();
 
         String homeTeamName = "Germany";
