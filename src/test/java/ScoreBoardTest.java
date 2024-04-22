@@ -18,7 +18,7 @@ public class ScoreBoardTest {
     public void newMatchShouldAddMatchToOngoingMatches() {
         ScoreBoard scoreBoard = new ScoreBoard();
 
-        scoreBoard.newMatch();
+        scoreBoard.newMatch("Germany", "Brazil");
 
         assertThat(scoreBoard.getOngoingMatches()).isNotNull();
         assertThat(scoreBoard.getOngoingMatches().size()).isEqualTo(1);
