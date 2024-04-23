@@ -4,10 +4,7 @@ package org.sportradar.scoreboard.domainvalue;
 import lombok.Getter;
 import org.sportradar.scoreboard.exceptions.*;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -76,6 +73,8 @@ public class ScoreBoard {
     }
 
     public List<Match> getSummary() {
-        return Collections.emptyList();
+        return ongoingMatches.stream().sorted(byTotalScore.reversed()).toList();
     }
+
+    private final Comparator<Match> byTotalScore = Comparator.comparing(match -> match.getAwayTeam().getScore() + match.getHomeTeam().getScore());
 }

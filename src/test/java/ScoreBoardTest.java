@@ -330,28 +330,28 @@ public class ScoreBoardTest {
         scoreBoard.newMatch(homeTeamName2, awayTeamName2);
 
         assertThat(scoreBoard.getOngoingMatches().size()).isEqualTo(2);
-        scoreBoard.updateMatchScore(0, 6, 6);
+        scoreBoard.updateMatchScore(1, 6, 6);
 
         String homeTeamName3 = "Germany";
         String awayTeamName3 = "France";
         scoreBoard.newMatch(homeTeamName3, awayTeamName3);
 
         assertThat(scoreBoard.getOngoingMatches().size()).isEqualTo(3);
-        scoreBoard.updateMatchScore(0, 2, 2);
+        scoreBoard.updateMatchScore(2, 2, 2);
 
         String homeTeamName4 = "Spain";
         String awayTeamName4 = "Brazil";
         scoreBoard.newMatch(homeTeamName4, awayTeamName4);
 
         assertThat(scoreBoard.getOngoingMatches().size()).isEqualTo(4);
-        scoreBoard.updateMatchScore(0, 10, 2);
+        scoreBoard.updateMatchScore(3, 10, 2);
 
         String homeTeamName5 = "Mexico";
         String awayTeamName5 = "Canada";
         scoreBoard.newMatch(homeTeamName5, awayTeamName5);
 
         assertThat(scoreBoard.getOngoingMatches().size()).isEqualTo(5);
-        scoreBoard.updateMatchScore(0, 0, 5);
+        scoreBoard.updateMatchScore(4, 0, 5);
 
         List<Match> scoreBoardSummary = scoreBoard.getSummary();
 
