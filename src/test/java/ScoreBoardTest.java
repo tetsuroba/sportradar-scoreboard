@@ -3,10 +3,7 @@ import org.junit.jupiter.api.Assertions;
 import org.sportradar.scoreboard.domainvalue.ScoreBoard;
 import org.junit.jupiter.api.Test;
 import org.sportradar.scoreboard.domainvalue.TeamType;
-import org.sportradar.scoreboard.exceptions.InvalidScoreException;
-import org.sportradar.scoreboard.exceptions.NoTeamFoundException;
-import org.sportradar.scoreboard.exceptions.NoTeamNameGivenException;
-import org.sportradar.scoreboard.exceptions.TeamAlreadyInMatchException;
+import org.sportradar.scoreboard.exceptions.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -97,6 +94,24 @@ public class ScoreBoardTest {
         Assertions.assertThrows(
                 NoTeamNameGivenException.class,
                 () -> scoreBoard.newMatch("", awayTeamName)
+        );
+    }
+
+    @Test
+    public void newMatchShouldThrowDuplicateTeamExceptionWhenGivenTeamsAreTheSame() {
+        ScoreBoard scoreBoard = new ScoreBoard();
+
+        String homeTeamName = "Germany";
+        String awayTeamName = "Germany";
+
+        Assertions.assertThrows(
+                DuplicateTeamException.class,
+                () -> scoreBoard.newMatch(homeTeamName, awayTeamName)
+        );
+
+        Assertions.assertThrows(
+                DuplicateTeamException.class,
+                () -> scoreBoard.newMatch(homeTeamName + " ", " " + awayTeamName)
         );
     }
 
