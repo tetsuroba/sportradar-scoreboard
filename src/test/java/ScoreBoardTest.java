@@ -186,4 +186,48 @@ public class ScoreBoardTest {
 
         assertThat(scoreBoard.getOngoingMatches().size()).isEqualTo(0);
     }
+
+    @Test
+    public void finishMatchShouldRemoveGivenIndexedMatchAndKeepTheOtherMatch() throws NoTeamNameGivenException {
+        ScoreBoard scoreBoard = new ScoreBoard();
+
+        String homeTeamName = "Germany";
+        String awayTeamName = "Brazil";
+
+        String homeTeamName2 = "Uruguay";
+        String awayTeamName2 = "Argentina";
+
+        scoreBoard.newMatch(homeTeamName, awayTeamName);
+        scoreBoard.newMatch(homeTeamName2, awayTeamName2);
+
+        assertThat(scoreBoard.getOngoingMatches()).isNotNull();
+        assertThat(scoreBoard.getOngoingMatches().size()).isEqualTo(2);
+
+        scoreBoard.finishMatch(0);
+        assertThat(scoreBoard.getOngoingMatches().size()).isEqualTo(1);
+        assertThat(scoreBoard.getOngoingMatches().getFirst().getHomeTeam().getName()).isEqualTo(homeTeamName2);
+        assertThat(scoreBoard.getOngoingMatches().getFirst().getAwayTeam().getName()).isEqualTo(awayTeamName2);
+    }
+
+    @Test
+    public void finishMatchShouldThrowNoTeamFoundExceptionWhenTeamIndexDoesNotExist() throws NoTeamNameGivenException {
+        ScoreBoard scoreBoard = new ScoreBoard();
+
+        Assertions.assertThrows(
+                NoTeamFoundException.class,
+                () -> scoreBoard.finishMatch(0)
+        );
+
+        String homeTeamName = "Germany";
+        String awayTeamName = "Brazil";
+        scoreBoard.newMatch(homeTeamName, awayTeamName);
+        Assertions.assertThrows(
+                NoTeamFoundException.class,
+                () -> scoreBoard.finishMatch(1)
+        );
+        Assertions.assertThrows(
+                NoTeamFoundException.class,
+                () -> scoreBoard.finishMatch(null)
+        );
+    }
 }

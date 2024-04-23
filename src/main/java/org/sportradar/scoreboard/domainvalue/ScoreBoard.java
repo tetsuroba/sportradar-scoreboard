@@ -43,7 +43,10 @@ public class ScoreBoard {
     }
 
     public void finishMatch(Integer index) {
-
+        if(index == 0){
+            ongoingMatches.removeFirst();
+        } else {
+            ongoingMatches.remove(ongoingMatches.get(index));
+        }
     }
-
 }
