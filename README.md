@@ -4,7 +4,7 @@
 
 1. Java 21
 2. Maven
-3. 
+
 ### Setting up for local project usage
 
 1. Clone with git
@@ -18,7 +18,7 @@
         <artifactId>scoreboard</artifactId>
         <version>1.0-SNAPSHOT</version>
         <scope>system</scope>
-        <systemPath>${project.basedir}/src/main/resources/scoreboard.jar</systemPath>
+        <systemPath>${project.basedir}/src/main/resources/scoreboard-1.0-SNAPSHOT.jar</systemPath>
     </dependency>
 </dependencies>
 ```
