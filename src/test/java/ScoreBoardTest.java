@@ -18,7 +18,7 @@ public class ScoreBoardTest {
     }
 
     @Test
-    public void newMatchShouldAddMatchToOngoingMatches() throws NoTeamNameGivenException, TeamAlreadyInMatchException {
+    public void newMatchShouldAddMatchToOngoingMatches() throws NoTeamNameGivenException, TeamAlreadyInMatchException, DuplicateTeamException {
         ScoreBoard scoreBoard = new ScoreBoard();
 
         scoreBoard.newMatch("Germany", "Brazil");
@@ -28,7 +28,7 @@ public class ScoreBoardTest {
     }
 
     @Test
-    public void newMatchTeamsShouldMatchGivenTeams() throws NoTeamNameGivenException, TeamAlreadyInMatchException {
+    public void newMatchTeamsShouldMatchGivenTeams() throws NoTeamNameGivenException, TeamAlreadyInMatchException, DuplicateTeamException {
         ScoreBoard scoreBoard = new ScoreBoard();
 
         String homeTeamName = "Germany";
@@ -116,7 +116,7 @@ public class ScoreBoardTest {
     }
 
     @Test
-    public void newMatchShouldThrowTeamAlreadyInMatchExceptionWhenANewMatchIsCreatedWithTheSameTeam() throws NoTeamNameGivenException, TeamAlreadyInMatchException {
+    public void newMatchShouldThrowTeamAlreadyInMatchExceptionWhenANewMatchIsCreatedWithTheSameTeam() throws NoTeamNameGivenException, TeamAlreadyInMatchException, DuplicateTeamException {
         ScoreBoard scoreBoard = new ScoreBoard();
 
         String homeTeamName = "Germany";
@@ -148,7 +148,7 @@ public class ScoreBoardTest {
     }
 
     @Test
-    public void updateMatchScoreShouldUpdateGivenOngoingMatchesScore() throws NoTeamNameGivenException, NoTeamFoundException, InvalidScoreException, TeamAlreadyInMatchException {
+    public void updateMatchScoreShouldUpdateGivenOngoingMatchesScore() throws NoTeamNameGivenException, NoTeamFoundException, InvalidScoreException, TeamAlreadyInMatchException, DuplicateTeamException {
         ScoreBoard scoreBoard = new ScoreBoard();
 
         String homeTeamName = "Germany";
@@ -174,7 +174,7 @@ public class ScoreBoardTest {
     }
 
     @Test
-    public void updateMatchScoreShouldThrowInvalidScoreExceptionWhenInvalidScoreIsGiven() throws NoTeamNameGivenException, TeamAlreadyInMatchException {
+    public void updateMatchScoreShouldThrowInvalidScoreExceptionWhenInvalidScoreIsGiven() throws NoTeamNameGivenException, TeamAlreadyInMatchException, DuplicateTeamException {
         ScoreBoard scoreBoard = new ScoreBoard();
 
         String homeTeamName = "Germany";
@@ -220,7 +220,7 @@ public class ScoreBoardTest {
     }
 
     @Test
-    public void finishMatchShouldRemoveGivenIndexedMatchFromTheScoreboard() throws NoTeamNameGivenException, NoTeamFoundException, TeamAlreadyInMatchException {
+    public void finishMatchShouldRemoveGivenIndexedMatchFromTheScoreboard() throws NoTeamNameGivenException, NoTeamFoundException, TeamAlreadyInMatchException, DuplicateTeamException {
         ScoreBoard scoreBoard = new ScoreBoard();
         String homeTeamName = "Germany";
         String awayTeamName = "Brazil";
@@ -236,7 +236,7 @@ public class ScoreBoardTest {
     }
 
     @Test
-    public void finishMatchShouldRemoveGivenIndexedMatchAndKeepTheOtherMatch() throws NoTeamNameGivenException, NoTeamFoundException, TeamAlreadyInMatchException {
+    public void finishMatchShouldRemoveGivenIndexedMatchAndKeepTheOtherMatch() throws NoTeamNameGivenException, NoTeamFoundException, TeamAlreadyInMatchException, DuplicateTeamException {
         ScoreBoard scoreBoard = new ScoreBoard();
 
         String homeTeamName = "Germany";
@@ -258,7 +258,7 @@ public class ScoreBoardTest {
     }
 
     @Test
-    public void finishMatchShouldThrowNoTeamFoundExceptionWhenTeamIndexDoesNotExist() throws NoTeamNameGivenException, TeamAlreadyInMatchException {
+    public void finishMatchShouldThrowNoTeamFoundExceptionWhenTeamIndexDoesNotExist() throws NoTeamNameGivenException, TeamAlreadyInMatchException, DuplicateTeamException {
         ScoreBoard scoreBoard = new ScoreBoard();
 
         Assertions.assertThrows(

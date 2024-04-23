@@ -2,10 +2,7 @@ package org.sportradar.scoreboard.domainvalue;
 
 
 import lombok.Getter;
-import org.sportradar.scoreboard.exceptions.InvalidScoreException;
-import org.sportradar.scoreboard.exceptions.NoTeamFoundException;
-import org.sportradar.scoreboard.exceptions.NoTeamNameGivenException;
-import org.sportradar.scoreboard.exceptions.TeamAlreadyInMatchException;
+import org.sportradar.scoreboard.exceptions.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -21,7 +18,7 @@ public class ScoreBoard {
         ongoingMatches = new LinkedList<>();
     }
 
-    public void newMatch(String homeTeamName, String awayTeamName) throws NoTeamNameGivenException, TeamAlreadyInMatchException {
+    public void newMatch(String homeTeamName, String awayTeamName) throws NoTeamNameGivenException, TeamAlreadyInMatchException, DuplicateTeamException {
         if(homeTeamName == null || homeTeamName.trim().isEmpty()) {
             throw new NoTeamNameGivenException("homeTeamName is empty or null " + homeTeamName);
         }
@@ -31,6 +28,10 @@ public class ScoreBoard {
 
         String trimmedHomeTeamName = homeTeamName.trim();
         String trimmedAwayTeamName = awayTeamName.trim();
+
+        if(trimmedHomeTeamName.equals(trimmedAwayTeamName)) {
+            throw new DuplicateTeamException();
+        }
 
         Set<String> currentlyPlayingTeams = ongoingMatches.stream().flatMap(
                 match -> Stream.of(match.getHomeTeam().getName(), match.getAwayTeam().getName())
