@@ -73,7 +73,7 @@ public class ScoreBoard {
     }
 
     public List<Match> getSummary() {
-        return ongoingMatches.stream().sorted(byTotalScore.reversed()).toList();
+        return ongoingMatches.reversed().stream().sorted(byTotalScore.reversed()).toList();
     }
 
     private final Comparator<Match> byTotalScore = Comparator.comparing(match -> match.getAwayTeam().getScore() + match.getHomeTeam().getScore());

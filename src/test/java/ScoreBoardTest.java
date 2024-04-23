@@ -310,8 +310,8 @@ public class ScoreBoardTest {
         scoreBoard.updateMatchScore(0, 10, 5);
         scoreBoardSummary = scoreBoard.getSummary();
         assertThat(scoreBoardSummary.size()).isEqualTo(2);
-        assertThat(scoreBoardSummary.get(0).getHomeTeam().getName()).isEqualTo(homeTeamName2);
-        assertThat(scoreBoardSummary.get(1).getHomeTeam().getName()).isEqualTo(homeTeamName);
+        assertThat(scoreBoardSummary.get(0).getHomeTeam().getName()).isEqualTo(homeTeamName);
+        assertThat(scoreBoardSummary.get(1).getHomeTeam().getName()).isEqualTo(homeTeamName2);
     }
 
     @Test
@@ -357,10 +357,10 @@ public class ScoreBoardTest {
         List<Match> scoreBoardSummary = scoreBoard.getSummary();
 
         assertThat(scoreBoardSummary.size()).isEqualTo(5);
-        assertThat(scoreBoardSummary.get(0).getHomeTeam().getName()).isEqualTo(homeTeamName2);
-        assertThat(scoreBoardSummary.get(1).getHomeTeam().getName()).isEqualTo(homeTeamName4);
-        assertThat(scoreBoardSummary.get(2).getHomeTeam().getName()).isEqualTo(homeTeamName5);
-        assertThat(scoreBoardSummary.get(3).getHomeTeam().getName()).isEqualTo(homeTeamName);
+        assertThat(scoreBoardSummary.get(0).getHomeTeam().getName()).isEqualTo(homeTeamName4);
+        assertThat(scoreBoardSummary.get(1).getHomeTeam().getName()).isEqualTo(homeTeamName2);
+        assertThat(scoreBoardSummary.get(2).getHomeTeam().getName()).isEqualTo(homeTeamName);
+        assertThat(scoreBoardSummary.get(3).getHomeTeam().getName()).isEqualTo(homeTeamName5);
         assertThat(scoreBoardSummary.get(4).getHomeTeam().getName()).isEqualTo(homeTeamName3);
 
     }
