@@ -3,6 +3,8 @@ import org.junit.jupiter.api.Assertions;
 import org.sportradar.scoreboard.domainvalue.ScoreBoard;
 import org.junit.jupiter.api.Test;
 import org.sportradar.scoreboard.domainvalue.TeamType;
+import org.sportradar.scoreboard.exceptions.InvalidScoreException;
+import org.sportradar.scoreboard.exceptions.NoTeamFoundException;
 import org.sportradar.scoreboard.exceptions.NoTeamNameGivenException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -94,6 +96,62 @@ public class ScoreBoardTest {
         Assertions.assertThrows(
                 NoTeamNameGivenException.class,
                 () -> scoreBoard.newMatch("", awayTeamName)
+        );
+    }
+
+    @Test
+    public void updateMatchScoreShouldUpdateGivenOngoingMatchesScore() throws NoTeamNameGivenException {
+        ScoreBoard scoreBoard = new ScoreBoard();
+
+        String homeTeamName = "Germany";
+        String awayTeamName = "Brazil";
+
+        scoreBoard.newMatch(homeTeamName, awayTeamName);
+        assertThat(scoreBoard.getOngoingMatches()).isNotNull();
+        scoreBoard.updateMatchScore(0, 1, 0);
+
+        assertThat(scoreBoard.getOngoingMatches().getFirst().getHomeTeam().getScore()).isEqualTo(1);
+        assertThat(scoreBoard.getOngoingMatches().getFirst().getAwayTeam().getScore()).isEqualTo(0);
+    }
+
+    @Test
+    public void updateMatchScoreShouldThrowNoTeamFoundExceptionWhenTeamIndexDoesNotExist() {
+        ScoreBoard scoreBoard = new ScoreBoard();
+
+        Assertions.assertThrows(
+                NoTeamFoundException.class,
+                () -> scoreBoard.updateMatchScore(0,1,0)
+        );
+    }
+
+    @Test
+    public void updateMatchScoreShouldThrowInvalidScoreExceptionWhenInvalidScoreIsGiven() throws NoTeamNameGivenException {
+        ScoreBoard scoreBoard = new ScoreBoard();
+
+        String homeTeamName = "Germany";
+        String awayTeamName = "Brazil";
+
+        scoreBoard.newMatch(homeTeamName, awayTeamName);
+        assertThat(scoreBoard.getOngoingMatches()).isNotNull();
+
+        Assertions.assertThrows(
+                InvalidScoreException.class,
+                () -> scoreBoard.updateMatchScore(0,-1,0)
+        );
+
+        Assertions.assertThrows(
+                InvalidScoreException.class,
+                () -> scoreBoard.updateMatchScore(0,-1,-1)
+        );
+
+        Assertions.assertThrows(
+                InvalidScoreException.class,
+                () -> scoreBoard.updateMatchScore(0,10,-1)
+        );
+
+        Assertions.assertThrows(
+                InvalidScoreException.class,
+                () -> scoreBoard.updateMatchScore(0,Integer.MAX_VALUE + 1,1)
         );
     }
 

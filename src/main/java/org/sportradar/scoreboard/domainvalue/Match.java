@@ -8,4 +8,8 @@ import lombok.Getter;
 public class Match {
     private Team homeTeam;
     private Team awayTeam;
+
+    public void updateScore(Integer homeTeamScore, Integer awayTeamScore) {
+
+    }
 }

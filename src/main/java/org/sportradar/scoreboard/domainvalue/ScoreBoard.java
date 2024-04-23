@@ -26,4 +26,9 @@ public class ScoreBoard {
         Team awayTeam = new Team(awayTeamName,0, TeamType.AWAY);
         ongoingMatches.add(new Match(homeTeam, awayTeam));
     }
+
+    public void updateMatchScore(Integer index, Integer homeTeamNewScore, Integer awayTeamNewScore) {
+
+    }
+
 }
