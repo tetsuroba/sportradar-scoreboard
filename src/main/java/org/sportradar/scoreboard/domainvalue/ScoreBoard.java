@@ -5,9 +5,13 @@ import lombok.Getter;
 import org.sportradar.scoreboard.exceptions.InvalidScoreException;
 import org.sportradar.scoreboard.exceptions.NoTeamFoundException;
 import org.sportradar.scoreboard.exceptions.NoTeamNameGivenException;
+import org.sportradar.scoreboard.exceptions.TeamAlreadyInMatchException;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Getter
 public class ScoreBoard {
@@ -17,15 +21,31 @@ public class ScoreBoard {
         ongoingMatches = new LinkedList<>();
     }
 
-    public void newMatch(String homeTeamName, String awayTeamName) throws NoTeamNameGivenException {
+    public void newMatch(String homeTeamName, String awayTeamName) throws NoTeamNameGivenException, TeamAlreadyInMatchException {
         if(homeTeamName == null || homeTeamName.trim().isEmpty()) {
             throw new NoTeamNameGivenException("homeTeamName is empty or null " + homeTeamName);
         }
         if(awayTeamName == null || awayTeamName.trim().isEmpty()) {
             throw new NoTeamNameGivenException("awayTeamName is empty or null " + awayTeamName);
         }
-        Team homeTeam = new Team(homeTeamName,0, TeamType.HOME);
-        Team awayTeam = new Team(awayTeamName,0, TeamType.AWAY);
+
+        String trimmedHomeTeamName = homeTeamName.trim();
+        String trimmedAwayTeamName = awayTeamName.trim();
+
+        Set<String> currentlyPlayingTeams = ongoingMatches.stream().flatMap(
+                match -> Stream.of(match.getHomeTeam().getName(), match.getAwayTeam().getName())
+        ).collect(Collectors.toSet());
+
+        if(currentlyPlayingTeams.contains(trimmedHomeTeamName)) {
+            throw new TeamAlreadyInMatchException("Team " + homeTeamName + " is already in match.");
+        }
+
+        if(currentlyPlayingTeams.contains(trimmedAwayTeamName)) {
+            throw new TeamAlreadyInMatchException("Team " + awayTeamName + " is already in match.");
+        }
+
+        Team homeTeam = new Team(trimmedHomeTeamName,0, TeamType.HOME);
+        Team awayTeam = new Team(trimmedAwayTeamName,0, TeamType.AWAY);
         ongoingMatches.add(new Match(homeTeam, awayTeam));
     }
 
