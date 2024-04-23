@@ -4,6 +4,7 @@ package org.sportradar.scoreboard.domainvalue;
 import lombok.Getter;
 import org.sportradar.scoreboard.exceptions.*;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -72,5 +73,9 @@ public class ScoreBoard {
         } else {
             ongoingMatches.remove(ongoingMatches.get(index));
         }
+    }
+
+    public List<Match> getSummary() {
+        return Collections.emptyList();
     }
 }

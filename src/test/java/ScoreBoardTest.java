@@ -1,9 +1,12 @@
 
 import org.junit.jupiter.api.Assertions;
+import org.sportradar.scoreboard.domainvalue.Match;
 import org.sportradar.scoreboard.domainvalue.ScoreBoard;
 import org.junit.jupiter.api.Test;
 import org.sportradar.scoreboard.domainvalue.TeamType;
 import org.sportradar.scoreboard.exceptions.*;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -277,5 +280,87 @@ public class ScoreBoardTest {
                 NoTeamFoundException.class,
                 () -> scoreBoard.finishMatch(null)
         );
+    }
+
+    @Test
+    public void getSummaryShouldReturnMatchesOrderedByTotalScore() throws NoTeamNameGivenException, TeamAlreadyInMatchException, DuplicateTeamException, NoTeamFoundException, InvalidScoreException {
+        ScoreBoard scoreBoard = new ScoreBoard();
+
+        String homeTeamName = "Germany";
+        String awayTeamName = "Brazil";
+        scoreBoard.newMatch(homeTeamName, awayTeamName);
+
+        assertThat(scoreBoard.getOngoingMatches().size()).isEqualTo(1);
+
+        String homeTeamName2 = "Uruguay";
+        String awayTeamName2 = "Argentina";
+        scoreBoard.newMatch(homeTeamName2, awayTeamName2);
+
+        assertThat(scoreBoard.getOngoingMatches().size()).isEqualTo(2);
+
+        scoreBoard.updateMatchScore(0, 5, 5);
+        scoreBoard.updateMatchScore(1, 5, 7);
+
+        List<Match> scoreBoardSummary = scoreBoard.getSummary();
+        assertThat(scoreBoardSummary.size()).isEqualTo(2);
+        assertThat(scoreBoardSummary.get(0).getHomeTeam().getName()).isEqualTo(homeTeamName2);
+        assertThat(scoreBoardSummary.get(1).getHomeTeam().getName()).isEqualTo(homeTeamName);
+
+
+        scoreBoard.updateMatchScore(0, 10, 5);
+        scoreBoardSummary = scoreBoard.getSummary();
+        assertThat(scoreBoardSummary.size()).isEqualTo(2);
+        assertThat(scoreBoardSummary.get(0).getHomeTeam().getName()).isEqualTo(homeTeamName);
+        assertThat(scoreBoardSummary.get(1).getHomeTeam().getName()).isEqualTo(homeTeamName2);
+    }
+
+    @Test
+    public void getSummaryShouldReturnEarlierMatchFirstInCaseTheyHaveTheSameTotalScore() throws NoTeamNameGivenException, TeamAlreadyInMatchException, DuplicateTeamException, NoTeamFoundException, InvalidScoreException {
+        ScoreBoard scoreBoard = new ScoreBoard();
+
+        String homeTeamName = "Argentina";
+        String awayTeamName = "Australia";
+        scoreBoard.newMatch(homeTeamName, awayTeamName);
+
+        assertThat(scoreBoard.getOngoingMatches().size()).isEqualTo(1);
+        scoreBoard.updateMatchScore(0, 3, 1);
+
+        String homeTeamName2 = "Uruguay";
+        String awayTeamName2 = "Italy";
+        scoreBoard.newMatch(homeTeamName2, awayTeamName2);
+
+        assertThat(scoreBoard.getOngoingMatches().size()).isEqualTo(2);
+        scoreBoard.updateMatchScore(0, 6, 6);
+
+        String homeTeamName3 = "Germany";
+        String awayTeamName3 = "France";
+        scoreBoard.newMatch(homeTeamName3, awayTeamName3);
+
+        assertThat(scoreBoard.getOngoingMatches().size()).isEqualTo(3);
+        scoreBoard.updateMatchScore(0, 2, 2);
+
+        String homeTeamName4 = "Spain";
+        String awayTeamName4 = "Brazil";
+        scoreBoard.newMatch(homeTeamName4, awayTeamName4);
+
+        assertThat(scoreBoard.getOngoingMatches().size()).isEqualTo(4);
+        scoreBoard.updateMatchScore(0, 10, 2);
+
+        String homeTeamName5 = "Mexico";
+        String awayTeamName5 = "Canada";
+        scoreBoard.newMatch(homeTeamName5, awayTeamName5);
+
+        assertThat(scoreBoard.getOngoingMatches().size()).isEqualTo(5);
+        scoreBoard.updateMatchScore(0, 0, 5);
+
+        List<Match> scoreBoardSummary = scoreBoard.getSummary();
+
+        assertThat(scoreBoardSummary.size()).isEqualTo(5);
+        assertThat(scoreBoardSummary.get(0).getHomeTeam().getName()).isEqualTo(homeTeamName2);
+        assertThat(scoreBoardSummary.get(1).getHomeTeam().getName()).isEqualTo(homeTeamName4);
+        assertThat(scoreBoardSummary.get(2).getHomeTeam().getName()).isEqualTo(homeTeamName5);
+        assertThat(scoreBoardSummary.get(3).getHomeTeam().getName()).isEqualTo(homeTeamName);
+        assertThat(scoreBoardSummary.get(4).getHomeTeam().getName()).isEqualTo(homeTeamName3);
+
     }
 }
