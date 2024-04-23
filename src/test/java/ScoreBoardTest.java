@@ -154,7 +154,36 @@ public class ScoreBoardTest {
                 InvalidScoreException.class,
                 () -> scoreBoard.updateMatchScore(0,Integer.MAX_VALUE + 1,1)
         );
+
+        Assertions.assertThrows(
+                InvalidScoreException.class,
+                () -> scoreBoard.updateMatchScore(0,null,1)
+        );
+
+        Assertions.assertThrows(
+                InvalidScoreException.class,
+                () -> scoreBoard.updateMatchScore(0,1,null)
+        );
+
+        Assertions.assertThrows(
+                InvalidScoreException.class,
+                () -> scoreBoard.updateMatchScore(null,1,null)
+        );
     }
 
+    @Test
+    public void finishMatchShouldRemoveGivenIndexedMatchFromTheScoreboard() throws NoTeamNameGivenException {
+        ScoreBoard scoreBoard = new ScoreBoard();
+        String homeTeamName = "Germany";
+        String awayTeamName = "Brazil";
 
+        scoreBoard.newMatch(homeTeamName, awayTeamName);
+
+        assertThat(scoreBoard.getOngoingMatches()).isNotNull();
+        assertThat(scoreBoard.getOngoingMatches().size()).isEqualTo(1);
+
+        scoreBoard.finishMatch(0);
+
+        assertThat(scoreBoard.getOngoingMatches().size()).isEqualTo(0);
+    }
 }

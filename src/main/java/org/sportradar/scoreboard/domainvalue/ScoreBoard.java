@@ -30,7 +30,7 @@ public class ScoreBoard {
     }
 
     public void updateMatchScore(Integer index, Integer homeTeamNewScore, Integer awayTeamNewScore) throws NoTeamFoundException, InvalidScoreException {
-        if(ongoingMatches.size() <= index || index < 0) {
+        if(index == null || ongoingMatches.size() <= index || index < 0) {
             throw new NoTeamFoundException("No team found with given index " + index);
         }
         if(homeTeamNewScore == null || homeTeamNewScore < 0) {
@@ -40,6 +40,10 @@ public class ScoreBoard {
             throw new InvalidScoreException("Invalid away team score given " + awayTeamNewScore);
         }
         ongoingMatches.get(index).updateScore(homeTeamNewScore, awayTeamNewScore);
+    }
+
+    public void finishMatch(Integer index) {
+
     }
 
 }
