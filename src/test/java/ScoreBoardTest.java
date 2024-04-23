@@ -6,6 +6,7 @@ import org.sportradar.scoreboard.domainvalue.TeamType;
 import org.sportradar.scoreboard.exceptions.InvalidScoreException;
 import org.sportradar.scoreboard.exceptions.NoTeamFoundException;
 import org.sportradar.scoreboard.exceptions.NoTeamNameGivenException;
+import org.sportradar.scoreboard.exceptions.TeamAlreadyInMatchException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -100,6 +101,38 @@ public class ScoreBoardTest {
     }
 
     @Test
+    public void newMatchShouldThrowTeamAlreadyInMatchExceptionWhenANewMatchIsCreatedWithTheSameTeam() throws NoTeamNameGivenException {
+        ScoreBoard scoreBoard = new ScoreBoard();
+
+        String homeTeamName = "Germany";
+        String awayTeamName = "Brazil";
+        String homeTeamName2 = "Uruguay";
+        String awayTeamName2 = "Argentina";
+
+        scoreBoard.newMatch(homeTeamName, awayTeamName);
+
+        Assertions.assertThrows(
+                TeamAlreadyInMatchException.class,
+                () -> scoreBoard.newMatch(homeTeamName, awayTeamName)
+        );
+
+        Assertions.assertThrows(
+                TeamAlreadyInMatchException.class,
+                () -> scoreBoard.newMatch(homeTeamName + " ", awayTeamName + " ")
+        );
+
+        Assertions.assertThrows(
+                TeamAlreadyInMatchException.class,
+                () -> scoreBoard.newMatch(homeTeamName, awayTeamName2)
+        );
+
+        Assertions.assertThrows(
+                TeamAlreadyInMatchException.class,
+                () -> scoreBoard.newMatch(homeTeamName2, awayTeamName)
+        );
+    }
+
+    @Test
     public void updateMatchScoreShouldUpdateGivenOngoingMatchesScore() throws NoTeamNameGivenException, NoTeamFoundException, InvalidScoreException {
         ScoreBoard scoreBoard = new ScoreBoard();
 
@@ -166,13 +199,13 @@ public class ScoreBoardTest {
         );
 
         Assertions.assertThrows(
-                InvalidScoreException.class,
-                () -> scoreBoard.updateMatchScore(null,1,null)
+                NoTeamFoundException.class,
+                () -> scoreBoard.updateMatchScore(null,1,1)
         );
     }
 
     @Test
-    public void finishMatchShouldRemoveGivenIndexedMatchFromTheScoreboard() throws NoTeamNameGivenException {
+    public void finishMatchShouldRemoveGivenIndexedMatchFromTheScoreboard() throws NoTeamNameGivenException, NoTeamFoundException {
         ScoreBoard scoreBoard = new ScoreBoard();
         String homeTeamName = "Germany";
         String awayTeamName = "Brazil";
@@ -188,7 +221,7 @@ public class ScoreBoardTest {
     }
 
     @Test
-    public void finishMatchShouldRemoveGivenIndexedMatchAndKeepTheOtherMatch() throws NoTeamNameGivenException {
+    public void finishMatchShouldRemoveGivenIndexedMatchAndKeepTheOtherMatch() throws NoTeamNameGivenException, NoTeamFoundException {
         ScoreBoard scoreBoard = new ScoreBoard();
 
         String homeTeamName = "Germany";

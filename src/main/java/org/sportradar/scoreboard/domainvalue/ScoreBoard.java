@@ -42,7 +42,10 @@ public class ScoreBoard {
         ongoingMatches.get(index).updateScore(homeTeamNewScore, awayTeamNewScore);
     }
 
-    public void finishMatch(Integer index) {
+    public void finishMatch(Integer index) throws NoTeamFoundException {
+        if(index == null || ongoingMatches.size() <= index || index < 0) {
+            throw new NoTeamFoundException("No team found with given index " + index);
+        }
         if(index == 0){
             ongoingMatches.removeFirst();
         } else {
