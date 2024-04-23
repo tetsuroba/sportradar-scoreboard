@@ -10,6 +10,7 @@ public class Match {
     private Team awayTeam;
 
     public void updateScore(Integer homeTeamScore, Integer awayTeamScore) {
-
+        homeTeam.setScore(homeTeamScore);
+        awayTeam.setScore(awayTeamScore);
     }
 }

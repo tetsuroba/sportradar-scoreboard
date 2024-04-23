@@ -100,7 +100,7 @@ public class ScoreBoardTest {
     }
 
     @Test
-    public void updateMatchScoreShouldUpdateGivenOngoingMatchesScore() throws NoTeamNameGivenException {
+    public void updateMatchScoreShouldUpdateGivenOngoingMatchesScore() throws NoTeamNameGivenException, NoTeamFoundException, InvalidScoreException {
         ScoreBoard scoreBoard = new ScoreBoard();
 
         String homeTeamName = "Germany";
@@ -109,9 +109,10 @@ public class ScoreBoardTest {
         scoreBoard.newMatch(homeTeamName, awayTeamName);
         assertThat(scoreBoard.getOngoingMatches()).isNotNull();
         scoreBoard.updateMatchScore(0, 1, 0);
+        scoreBoard.updateMatchScore(0, 1, 1);
 
         assertThat(scoreBoard.getOngoingMatches().getFirst().getHomeTeam().getScore()).isEqualTo(1);
-        assertThat(scoreBoard.getOngoingMatches().getFirst().getAwayTeam().getScore()).isEqualTo(0);
+        assertThat(scoreBoard.getOngoingMatches().getFirst().getAwayTeam().getScore()).isEqualTo(1);
     }
 
     @Test

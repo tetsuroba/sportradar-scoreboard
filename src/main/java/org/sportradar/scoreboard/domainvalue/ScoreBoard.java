@@ -2,6 +2,8 @@ package org.sportradar.scoreboard.domainvalue;
 
 
 import lombok.Getter;
+import org.sportradar.scoreboard.exceptions.InvalidScoreException;
+import org.sportradar.scoreboard.exceptions.NoTeamFoundException;
 import org.sportradar.scoreboard.exceptions.NoTeamNameGivenException;
 
 import java.util.LinkedList;
@@ -9,7 +11,7 @@ import java.util.List;
 
 @Getter
 public class ScoreBoard {
-    private List<Match> ongoingMatches;
+    private final List<Match> ongoingMatches;
 
     public ScoreBoard() {
         ongoingMatches = new LinkedList<>();
@@ -27,8 +29,17 @@ public class ScoreBoard {
         ongoingMatches.add(new Match(homeTeam, awayTeam));
     }
 
-    public void updateMatchScore(Integer index, Integer homeTeamNewScore, Integer awayTeamNewScore) {
-
+    public void updateMatchScore(Integer index, Integer homeTeamNewScore, Integer awayTeamNewScore) throws NoTeamFoundException, InvalidScoreException {
+        if(ongoingMatches.size() <= index || index < 0) {
+            throw new NoTeamFoundException("No team found with given index " + index);
+        }
+        if(homeTeamNewScore == null || homeTeamNewScore < 0) {
+            throw new InvalidScoreException("Invalid home team score given " + homeTeamNewScore);
+        }
+        if(awayTeamNewScore == null || awayTeamNewScore < 0) {
+            throw new InvalidScoreException("Invalid away team score given " + awayTeamNewScore);
+        }
+        ongoingMatches.get(index).updateScore(homeTeamNewScore, awayTeamNewScore);
     }
 
 }
