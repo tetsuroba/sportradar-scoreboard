@@ -310,27 +310,28 @@ public class ScoreBoardTest {
         scoreBoard.updateMatchScore(0, 10, 5);
         scoreBoardSummary = scoreBoard.getSummary();
         assertThat(scoreBoardSummary.size()).isEqualTo(2);
-        assertThat(scoreBoardSummary.get(0).getHomeTeam().getName()).isEqualTo(homeTeamName);
-        assertThat(scoreBoardSummary.get(1).getHomeTeam().getName()).isEqualTo(homeTeamName2);
+        assertThat(scoreBoardSummary.get(0).getHomeTeam().getName()).isEqualTo(homeTeamName2);
+        assertThat(scoreBoardSummary.get(1).getHomeTeam().getName()).isEqualTo(homeTeamName);
     }
 
     @Test
     public void getSummaryShouldReturnEarlierMatchFirstInCaseTheyHaveTheSameTotalScore() throws NoTeamNameGivenException, TeamAlreadyInMatchException, DuplicateTeamException, NoTeamFoundException, InvalidScoreException {
         ScoreBoard scoreBoard = new ScoreBoard();
 
-        String homeTeamName = "Argentina";
-        String awayTeamName = "Australia";
+
+        String homeTeamName = "Mexico";
+        String awayTeamName = "Canada";
         scoreBoard.newMatch(homeTeamName, awayTeamName);
 
         assertThat(scoreBoard.getOngoingMatches().size()).isEqualTo(1);
-        scoreBoard.updateMatchScore(0, 3, 1);
+        scoreBoard.updateMatchScore(0, 0, 5);
 
-        String homeTeamName2 = "Uruguay";
-        String awayTeamName2 = "Italy";
+        String homeTeamName2 = "Spain";
+        String awayTeamName2 = "Brazil";
         scoreBoard.newMatch(homeTeamName2, awayTeamName2);
 
         assertThat(scoreBoard.getOngoingMatches().size()).isEqualTo(2);
-        scoreBoard.updateMatchScore(1, 6, 6);
+        scoreBoard.updateMatchScore(1, 10, 2);
 
         String homeTeamName3 = "Germany";
         String awayTeamName3 = "France";
@@ -339,19 +340,19 @@ public class ScoreBoardTest {
         assertThat(scoreBoard.getOngoingMatches().size()).isEqualTo(3);
         scoreBoard.updateMatchScore(2, 2, 2);
 
-        String homeTeamName4 = "Spain";
-        String awayTeamName4 = "Brazil";
+        String homeTeamName4 = "Uruguay";
+        String awayTeamName4 = "Italy";
         scoreBoard.newMatch(homeTeamName4, awayTeamName4);
 
         assertThat(scoreBoard.getOngoingMatches().size()).isEqualTo(4);
-        scoreBoard.updateMatchScore(3, 10, 2);
+        scoreBoard.updateMatchScore(3, 6, 6);
 
-        String homeTeamName5 = "Mexico";
-        String awayTeamName5 = "Canada";
+        String homeTeamName5 = "Argentina";
+        String awayTeamName5 = "Australia";
         scoreBoard.newMatch(homeTeamName5, awayTeamName5);
 
         assertThat(scoreBoard.getOngoingMatches().size()).isEqualTo(5);
-        scoreBoard.updateMatchScore(4, 0, 5);
+        scoreBoard.updateMatchScore(4, 3, 1);
 
         List<Match> scoreBoardSummary = scoreBoard.getSummary();
 

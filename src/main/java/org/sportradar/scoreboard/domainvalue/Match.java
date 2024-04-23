@@ -13,4 +13,9 @@ public class Match {
         homeTeam.setScore(homeTeamScore);
         awayTeam.setScore(awayTeamScore);
     }
+
+    @Override
+    public String toString() {
+        return homeTeam.toString() + " - " + awayTeam.toString();
+    }
 }

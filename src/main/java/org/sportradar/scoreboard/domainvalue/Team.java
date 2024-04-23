@@ -11,4 +11,9 @@ public class Team {
     private String name;
     private Integer score;
     private TeamType type;
+
+    @Override
+    public String toString() {
+        return name + " " + score;
+    }
 }
